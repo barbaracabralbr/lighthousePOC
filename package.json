@@ -1,0 +1,28 @@
+{
+  "name": "lighthousepoc",
+  "version": "1.0.0",
+  "description": "Lighthouse running on Github Actions",
+  "main": "lighthouserc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barbaracabralTL/lighthousePOC.git"
+  },
+  "keywords": [
+    "ligthouse",
+    "github",
+    "actions"
+  ],
+  "author": "Bárbara Cabral da Conceição",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/barbaracabralTL/lighthousePOC/issues"
+  },
+  "homepage": "https://github.com/barbaracabralTL/lighthousePOC#readme",
+  "devDependencies": {
+    "@lhci/cli": "^0.8.0",
+    "lighthouse": "^8.0.0"
+  }
+}

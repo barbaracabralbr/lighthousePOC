@@ -1,0 +1,49 @@
+name: LH Audits
+
+on:
+  pull_request:
+    branches:
+    - master
+    paths-ignore:
+      - README.md
+      - .gitignore
+
+jobs:
+  run_lighthouse:
+      name: Lighthouse
+      runs-on: ubuntu-latest
+      timeout-minutes: 15
+
+      steps:
+        - name: Cancel Previous Runs
+          uses: styfle/cancel-workflow-action@0.4.0
+          with:
+            access_token: ${{ secrets.LIGHTHOUSE_CHECK_GITHUB_ACCESS_TOKEN }}
+        - uses: actions/checkout@v2
+        - name: Use Node.js 12.x
+          uses: actions/setup-node@v1
+          with:
+            node-version: 12.x
+        - name: Cache Node Modules
+          id: node-cache
+          uses: actions/cache@v2
+          with:
+            path: node_modules
+            key: node-modules-${{ hashFiles('package-lock.json') }}
+        - name: Install Dependencies
+          if: steps.node-cache.outputs.cache-hit != 'true'
+          run: npm install
+        - name: Build
+          run: npm run build;
+
+        - name: Run Lighthouse CI
+          run: |
+            lhci autorun --disable-network-throttling --disable-cpu-throttling
+          env:
+            LHCI_GITHUB_TOKEN: ${{ secrets.LIGHTHOUSE_CHECK_GITHUB_ACCESS_TOKEN }}
+        - name: Save lighthouse results
+          if: always()
+          uses: actions/upload-artifact@v2
+          with:
+            name: lighthouse-results
+            path: .lighthouseci       # This will save the Lighthouse results as .json files
